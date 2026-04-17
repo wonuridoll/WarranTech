@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Dashboard — WarranTech{% endblock %}
+{% block topbar_title %}Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block topbar_actions %}
+  <a href="/receipts/new/" class="btn btn-primary btn-sm">
+    <i class="bi bi-plus-lg"></i> Add Receipt
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="stat-grid" id="stat-grid">
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="bi bi-receipt"></i></div>
+    <div class="stat-info">
+      <div class="stat-value" id="stat-total">—</div>
+      <div class="stat-label">Total Receipts</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon green"><i class="bi bi-shield-check"></i></div>
+    <div class="stat-info">
+      <div class="stat-value" id="stat-active">—</div>
+      <div class="stat-label">Active Warranties</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon yellow"><i class="bi bi-hourglass-split"></i></div>
+    <div class="stat-info">
+      <div class="stat-value" id="stat-expiring">—</div>
+      <div class="stat-label">Expiring Soon</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="bi bi-cash-stack"></i></div>
+    <div class="stat-info">
+      <div class="stat-value" id="stat-value">—</div>
+      <div class="stat-label">Total Value</div>
+    </div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-title">
+        <i class="bi bi-receipt" style="color:var(--clr-orange);margin-right:7px;"></i>
+        Recent Receipts
+      </span>
+      <a href="/receipts/" class="btn btn-outline btn-sm">View All</a>
+    </div>
+    <div id="recent-receipts-list">
+      <div class="empty-state" style="padding:32px 0;">
+        <div class="spinner" style="margin:0 auto 12px;"></div>
+        <p>Loading receipts…</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-title">
+        <i class="bi bi-bell-fill" style="color:var(--clr-warning);margin-right:7px;"></i>
+        Expiring Soon
+      </span>
+      <a href="/reminders/" class="btn btn-outline btn-sm">View All</a>
+    </div>
+    <div id="expiring-list">
+      <div class="empty-state" style="padding:32px 0;">
+        <div class="spinner" style="margin:0 auto 12px;"></div>
+        <p>Checking reminders…</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

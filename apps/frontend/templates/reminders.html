@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Reminders — WarranTech{% endblock %}
+{% block topbar_title %}Warranty Reminders{% endblock %}
+{% block nav_reminders %}active{% endblock %}
+
+{% block content %}
+<div class="section-header" style="margin-bottom:20px;">
+  <div>
+    <h2>
+      <i class="bi bi-bell-fill"
+         style="color:var(--clr-warning);margin-right:9px;font-size:1.25rem;vertical-align:middle;"></i>
+      Expiring Warranties
+    </h2>
+    <p style="margin-top:4px;font-size:.875rem;">Warranties that need your attention soon</p>
+  </div>
+  <div id="reminder-count-badge" class="badge badge-red"
+       style="font-size:.85rem;padding:6px 16px;display:none;">
+    <i class="bi bi-exclamation-circle" style="margin-right:4px;"></i>
+    <span id="reminder-count">0</span>&nbsp;expiring soon
+  </div>
+</div>
+
+<div id="reminders-container">
+  <div class="empty-state">
+    <div class="spinner" style="margin:0 auto 12px;"></div>
+    <p>Checking your warranties…</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/reminders.js' %}"></script>
+{% endblock %}
