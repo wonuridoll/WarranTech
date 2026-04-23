@@ -9,21 +9,22 @@
   'use strict';
 
   const LS_COLLAPSED = 'wt_sidebar_collapsed';
-  const LS_THEME     = 'wt_theme';
+  const LS_THEME = 'wt_theme';
 
-  const sidebar    = document.getElementById('sidebar');
-  const toggleBtn  = document.getElementById('sidebar-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('sidebar-toggle');
   const toggleIcon = document.getElementById('toggle-icon');
-  const hamburger  = document.getElementById('hamburger');
-  const overlay    = document.getElementById('sidebar-overlay');
-  const main       = document.getElementById('main-content');
-  const html       = document.documentElement;
+  const hamburger = document.getElementById('hamburger');
+  const overlay = document.getElementById('sidebar-overlay');
+  const main = document.getElementById('main-content');
+  const html = document.documentElement;
+  const navGroups = document.querySelectorAll('.nav-group');
 
   /* ══════════════════════════════════════════════
      THEME SWITCHER
   ══════════════════════════════════════════════ */
   const optLight = document.getElementById('theme-opt-light');
-  const optDark  = document.getElementById('theme-opt-dark');
+  const optDark = document.getElementById('theme-opt-dark');
 
   function applyTheme(theme, save) {
     html.setAttribute('data-theme', theme);
@@ -47,8 +48,12 @@
     || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   applyTheme(savedTheme, false);
 
-  if (optLight) optLight.addEventListener('click', () => applyTheme('light'));
-  if (optDark)  optDark.addEventListener('click',  () => applyTheme('dark'));
+  if (optLight) optLight.addEventListener('click', () => {
+    applyTheme(isCollapsed() && html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  if (optDark) optDark.addEventListener('click', () => {
+    applyTheme(isCollapsed() && html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
 
   // Also expose globally so login page can reuse
   window.wtApplyTheme = applyTheme;
@@ -77,7 +82,7 @@
   if (localStorage.getItem(LS_COLLAPSED) === '1') {
     setSidebarState(true, false);
   }
-  
+
   // Re-enable transitions after initial boot
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
@@ -93,10 +98,10 @@
     if (label && !item.dataset.tooltip) item.dataset.tooltip = label.textContent.trim();
   });
 
-  const navGroups = document.querySelectorAll('.nav-group');
+  // navGroups was hoisted to the top to prevent ReferenceError
   navGroups.forEach(group => {
     const trigger = group.querySelector('.nav-item');
-    const sub     = group.querySelector('.nav-sub');
+    const sub = group.querySelector('.nav-sub');
     if (!trigger || !sub) return;
 
     const label = trigger.querySelector('.nav-label');
@@ -116,7 +121,7 @@
   function positionFlyouts() {
     navGroups.forEach(group => {
       const trigger = group.querySelector('.nav-item');
-      const sub     = group.querySelector('.nav-sub');
+      const sub = group.querySelector('.nav-sub');
       if (!trigger || !sub) return;
       if (isCollapsed()) sub.style.top = trigger.getBoundingClientRect().top + 'px';
       else { sub.style.top = ''; sub.style.left = ''; }
@@ -126,11 +131,11 @@
   /* ══════════════════════════════════════════════
      MOBILE HAMBURGER
   ══════════════════════════════════════════════ */
-  function openMobile()  { sidebar.classList.add('mobile-open'); overlay.classList.add('visible'); overlay.style.display = 'block'; if (hamburger) hamburger.setAttribute('aria-expanded', 'true'); }
+  function openMobile() { sidebar.classList.add('mobile-open'); overlay.classList.add('visible'); overlay.style.display = 'block'; if (hamburger) hamburger.setAttribute('aria-expanded', 'true'); }
   function closeMobile() { sidebar.classList.remove('mobile-open'); overlay.classList.remove('visible'); overlay.style.display = 'none'; if (hamburger) hamburger.setAttribute('aria-expanded', 'false'); }
 
   if (hamburger) hamburger.addEventListener('click', () => sidebar.classList.contains('mobile-open') ? closeMobile() : openMobile());
-  if (overlay)   overlay.addEventListener('click', closeMobile);
+  if (overlay) overlay.addEventListener('click', closeMobile);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobile(); });
 
 })();

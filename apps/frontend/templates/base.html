@@ -154,6 +154,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{% static 'js/api.js' %}?v=3"></script>
 <script src="{% static 'js/toast.js' %}?v=3"></script>
 <script src="{% static 'js/auth.js' %}?v=3"></script>
@@ -178,14 +179,36 @@
 
     /* Logout */
     const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        localStorage.removeItem('wt_access');
-        localStorage.removeItem('wt_refresh');
-        localStorage.removeItem('wt_user');
-        window.location.href = '/login/';
+    const userBtn   = document.getElementById('sidebar-user-btn');
+    
+    function handleLogout(e) {
+      e.stopPropagation();
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      Swal.fire({
+        title: 'Ready to leave?',
+        text: 'You will be securely logged out.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#F0A500',
+        cancelButtonColor: 'var(--clr-text-muted)',
+        confirmButtonText: 'Yes, log out',
+        background: isDark ? '#1e2028' : '#ffffff',
+        color: isDark ? '#e8eaf0' : '#1a1d23',
+        customClass: {
+          popup: 'card' // Reuse the local card class for rounded corners and shadow!
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.removeItem('wt_access');
+          localStorage.removeItem('wt_refresh');
+          localStorage.removeItem('wt_user');
+          window.location.href = '/login/';
+        }
       });
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', handleLogout);
     }
 
     /* Reminder badge */
