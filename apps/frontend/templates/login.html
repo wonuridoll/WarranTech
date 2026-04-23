@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — WarranTech</title>
+  <meta name="description" content="Sign in to WarranTech to manage your warranties and receipts." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=5" />
+  <!-- Apply saved theme before paint to avoid flash -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('wt_theme')
+        || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <div class="logo-icon-auth">
+        <i class="bi bi-shield-fill-check"></i>
+      </div>
+      <div class="logo-wordmark">Warran<span>Tech</span></div>
+      <div class="logo-tagline">Warranty &amp; Receipt Organizer</div>
+    </div>
+
+    <!-- Tab Switcher -->
+    <div class="auth-tabs" role="tablist">
+      <button class="auth-tab active" id="tab-signin"
+              role="tab" aria-selected="true" aria-controls="panel-signin">Sign In</button>
+      <button class="auth-tab" id="tab-register"
+              role="tab" aria-selected="false" aria-controls="panel-register">Register</button>
+    </div>
+
+    <!-- ── SIGN IN ── -->
+    <div id="panel-signin" role="tabpanel" aria-labelledby="tab-signin">
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <input id="username" name="username" type="text" class="form-control"
+                 placeholder="Enter your username" autocomplete="username" required />
+          <span class="form-error" id="username-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div style="position:relative;">
+            <input id="password" name="password" type="password" class="form-control"
+                   placeholder="Enter your password" autocomplete="current-password"
+                   required style="padding-right:44px;" />
+            <button type="button" id="pw-toggle"
+                    style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+                           background:none;border:none;color:var(--clr-text-muted);font-size:1rem;
+                           padding:0;cursor:pointer;" aria-label="Toggle password visibility">
+              <i class="bi bi-eye" id="pw-icon"></i>
+            </button>
+          </div>
+          <span class="form-error" id="password-error"></span>
+        </div>
+        <div id="general-error-wrapper" style="display:none;margin-bottom:12px;">
+          <span class="form-error show" id="general-error"></span>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                style="width:100%;justify-content:center;margin-top:4px;padding:13px;"
+                id="login-btn">
+          <span id="login-btn-text">Sign In</span>
+          <span id="login-spinner" class="spinner"
+                style="display:none;width:16px;height:16px;border-width:2px;
+                       border-color:rgba(255,255,255,.3);border-top-color:#fff;"></span>
+        </button>
+      </form>
+    </div>
+
+    <!-- ── REGISTER ── -->
+    <div id="panel-register" role="tabpanel" aria-labelledby="tab-register" style="display:none;">
+      <form id="register-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="r_first_name">First Name <span style="color:var(--clr-danger)">*</span></label>
+            <input id="r_first_name" type="text" class="form-control" placeholder="April" required />
+            <span class="form-error" id="r_first_name-error"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="r_last_name">Last Name <span style="color:var(--clr-danger)">*</span></label>
+            <input id="r_last_name" type="text" class="form-control" placeholder="Santos" required />
+            <span class="form-error" id="r_last_name-error"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r_email">Email <span style="color:var(--clr-danger)">*</span></label>
+          <input id="r_email" type="email" class="form-control" placeholder="april@example.com"
+                 autocomplete="email" required />
+          <span class="form-error" id="r_email-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="r_username">Username <span style="color:var(--clr-danger)">*</span></label>
+          <input id="r_username" type="text" class="form-control" placeholder="april_santos"
+                 autocomplete="username" required />
+          <span class="form-error" id="r_username-error"></span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="r_password">Password <span style="color:var(--clr-danger)">*</span></label>
+            <div style="position:relative;">
+              <input id="r_password" type="password" class="form-control" placeholder="Min 8 characters"
+                     autocomplete="new-password" required style="padding-right:44px;" />
+              <button type="button" id="r_pw_toggle"
+                      style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+                             background:none;border:none;color:var(--clr-text-muted);font-size:1rem;
+                             padding:0;cursor:pointer;" aria-label="Toggle password visibility">
+                <i class="bi bi-eye" id="r_pw_icon"></i>
+              </button>
+            </div>
+            <span class="form-error" id="r_password-error"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="r_password2">Confirm <span style="color:var(--clr-danger)">*</span></label>
+            <input id="r_password2" type="password" class="form-control" placeholder="Repeat password"
+                   autocomplete="new-password" required />
+            <span class="form-error" id="r_password2-error"></span>
+          </div>
+        </div>
+        <div id="r_general-error-wrapper" style="display:none;margin-bottom:12px;">
+          <span class="form-error show" id="r_general-error"></span>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                style="width:100%;justify-content:center;padding:13px;" id="register-btn">
+          <span id="register-btn-text">Create Account</span>
+          <span id="register-spinner" class="spinner"
+                style="display:none;width:16px;height:16px;border-width:2px;
+                       border-color:rgba(255,255,255,.3);border-top-color:#fff;"></span>
+        </button>
+      </form>
+    </div>
+
+  </div><!-- /.auth-card -->
+</div><!-- /.auth-wrapper -->
+
+<div id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{% static 'js/api.js' %}?v=4"></script>
+<script src="{% static 'js/toast.js' %}?v=4"></script>
+<script src="{% static 'js/auth.js' %}?v=4"></script>
+<script>
+(function () {
+  /* Redirect if already logged in */
+  if (localStorage.getItem('wt_access')) { window.location.href = '/dashboard/'; return; }
+
+  /* ── Tab switcher ── */
+  const tabSignin   = document.getElementById('tab-signin');
+  const tabRegister = document.getElementById('tab-register');
+  const panelSignin   = document.getElementById('panel-signin');
+  const panelRegister = document.getElementById('panel-register');
+
+  function activateTab(tab) {
+    if (tab === 'signin') {
+      tabSignin.classList.add('active');    tabSignin.setAttribute('aria-selected', 'true');
+      tabRegister.classList.remove('active'); tabRegister.setAttribute('aria-selected', 'false');
+      panelSignin.style.display = 'block'; panelRegister.style.display = 'none';
+    } else {
+      tabRegister.classList.add('active');  tabRegister.setAttribute('aria-selected', 'true');
+      tabSignin.classList.remove('active'); tabSignin.setAttribute('aria-selected', 'false');
+      panelRegister.style.display = 'block'; panelSignin.style.display = 'none';
+    }
+  }
+  tabSignin.addEventListener('click',   () => activateTab('signin'));
+  tabRegister.addEventListener('click', () => activateTab('register'));
+  if (window.location.search.includes('register')) activateTab('register');
+
+  /* ── Password toggles ── */
+  function pwToggle(inputId, iconId) {
+    var pw = document.getElementById(inputId), icon = document.getElementById(iconId);
+    var show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    icon.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+  }
+  document.getElementById('pw-toggle').addEventListener('click',   function(){ pwToggle('password',   'pw-icon'); });
+  document.getElementById('r_pw_toggle').addEventListener('click', function(){ pwToggle('r_password', 'r_pw_icon'); });
+
+  /* ── Sign In ── */
+  document.getElementById('login-form').addEventListener('submit', async function (e) {
+    e.preventDefault(); clearLoginErrors();
+    var username = document.getElementById('username').value.trim();
+    var password = document.getElementById('password').value;
+    if (!username) { showLoginErr('username', 'Username is required.'); return; }
+    if (!password) { showLoginErr('password', 'Password is required.'); return; }
+    setLoginLoading(true);
+    try {
+      var res = await api.post('/api/auth/login/', { username, password });
+      localStorage.setItem('wt_access',  res.data.access);
+      localStorage.setItem('wt_refresh', res.data.refresh);
+      localStorage.setItem('wt_user',    JSON.stringify(res.data.user));
+      showToast('Welcome back, ' + (res.data.user.first_name || res.data.user.username) + '!', 'success');
+      setTimeout(function(){ window.location.href = '/dashboard/'; }, 600);
+    } catch (err) {
+      var msg = (err.response && err.response.data && (err.response.data.non_field_errors || [err.response.data.detail])[0]) || 'Invalid credentials.';
+      document.getElementById('general-error').textContent = msg;
+      document.getElementById('general-error-wrapper').style.display = 'block';
+    } finally { setLoginLoading(false); }
+  });
+
+  function setLoginLoading(on) {
+    document.getElementById('login-btn').disabled = on;
+    document.getElementById('login-btn-text').textContent = on ? 'Signing in…' : 'Sign In';
+    document.getElementById('login-spinner').style.display = on ? 'inline-block' : 'none';
+  }
+  function clearLoginErrors() {
+    ['username','password'].forEach(function(f) {
+      document.getElementById(f).classList.remove('is-invalid');
+      var el = document.getElementById(f+'-error'); el.textContent=''; el.classList.remove('show');
+    });
+    document.getElementById('general-error-wrapper').style.display='none';
+  }
+  function showLoginErr(field, msg) {
+    document.getElementById(field).classList.add('is-invalid');
+    var el = document.getElementById(field+'-error'); el.textContent=msg; el.classList.add('show');
+  }
+
+  /* ── Register ── */
+  var R_FIELDS = ['r_username','r_email','r_password','r_password2','r_first_name','r_last_name'];
+  document.getElementById('register-form').addEventListener('submit', async function (e) {
+    e.preventDefault(); clearRegErrors();
+    var data = {
+      username:   document.getElementById('r_username').value.trim(),
+      email:      document.getElementById('r_email').value.trim(),
+      password:   document.getElementById('r_password').value,
+      password2:  document.getElementById('r_password2').value,
+      first_name: document.getElementById('r_first_name').value.trim(),
+      last_name:  document.getElementById('r_last_name').value.trim(),
+    };
+    var valid = true;
+    if (!data.first_name) { showRegErr('r_first_name','First name is required.'); valid=false; }
+    if (!data.last_name)  { showRegErr('r_last_name','Last name is required.'); valid=false; }
+    if (!data.username) { showRegErr('r_username','Username is required.'); valid=false; }
+    if (!data.email)    { showRegErr('r_email','Email is required.'); valid=false; }
+    if (!data.password) { showRegErr('r_password','Password is required.'); valid=false; }
+    if (data.password.length < 8) { showRegErr('r_password','At least 8 characters.'); valid=false; }
+    if (data.password !== data.password2) { showRegErr('r_password2','Passwords do not match.'); valid=false; }
+    if (!valid) return;
+    setRegLoading(true);
+    try {
+      var res = await api.post('/api/auth/register/', data);
+      localStorage.setItem('wt_access',  res.data.access);
+      localStorage.setItem('wt_refresh', res.data.refresh);
+      localStorage.setItem('wt_user',    JSON.stringify(res.data.user));
+      showToast('Account created! Welcome!','success');
+      setTimeout(function(){ window.location.href='/dashboard/'; },800);
+    } catch (err) {
+      var errors = (err.response && err.response.data) || {};
+      var map = {username:'r_username',email:'r_email',password:'r_password',password2:'r_password2',first_name:'r_first_name',last_name:'r_last_name'};
+      var handled = false;
+      Object.entries(map).forEach(function([k,v]){ if(errors[k]){ showRegErr(v, Array.isArray(errors[k])?errors[k][0]:errors[k]); handled=true; } });
+      if (!handled) {
+        var msg = (errors.non_field_errors && errors.non_field_errors[0]) || errors.detail || 'Registration failed.';
+        document.getElementById('r_general-error').textContent=msg;
+        document.getElementById('r_general-error-wrapper').style.display='block';
+      }
+    } finally { setRegLoading(false); }
+  });
+
+  function setRegLoading(on) {
+    document.getElementById('register-btn').disabled=on;
+    document.getElementById('register-btn-text').textContent=on?'Creating…':'Create Account';
+    document.getElementById('register-spinner').style.display=on?'inline-block':'none';
+  }
+  function clearRegErrors() {
+    R_FIELDS.forEach(function(f){ var el=document.getElementById(f); if(el)el.classList.remove('is-invalid'); var err=document.getElementById(f+'-error'); if(err){err.textContent='';err.classList.remove('show');} });
+    document.getElementById('r_general-error-wrapper').style.display='none';
+  }
+  function showRegErr(id,msg) {
+    var el=document.getElementById(id); if(el)el.classList.add('is-invalid');
+    var err=document.getElementById(id+'-error'); if(err){err.textContent=msg;err.classList.add('show');}
+  }
+
+  function showToast(msg, type) {
+    if (typeof window.showToast==='function') return window.showToast(msg,type);
+    var c=document.getElementById('toast-container'); if(!c)return;
+    var t=document.createElement('div'); t.className='toast toast-'+(type||'info');
+    t.innerHTML='<span class="toast-message">'+msg+'</span>'; c.appendChild(t);
+    setTimeout(function(){t.remove();},4000);
+  }
+})();
+</script>
+</body>
+</html>

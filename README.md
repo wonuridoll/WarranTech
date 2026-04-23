@@ -1,0 +1,33 @@
+# WarranTech 🛡️
+### Warranty & Digital Receipt Organizer
+**Group 6 | APPINTR BTIS3 (2T AY 25-26)** April Abegail B. Chiu · Mary Andrea C. Baron · Jed Lawrence S. Engbino
+
+---
+
+## Overview
+WarranTech is a full-stack web application that helps households track product warranties and digital receipts to avoid missed deadlines and unclaimed warranty claims.
+
+## Tech Stack
+| Layer | Technology |
+|---|---|
+| Backend API | Python 3.11 + Django 4.2 + Django REST Framework |
+| Authentication | djangorestframework-simplejwt (JWT) |
+| Database | SQLite (via Django ORM) |
+| Frontend | Vanilla HTML/CSS/JS + Axios (Django Templates) |
+| Image Storage | Local media folder (Pillow required) |
+
+## Quick Start
+
+### 1. Clone and set up virtual environment
+```bash
+git clone [https://github.com/wonuridoll/WarranTech.git](https://github.com/wonuridoll/WarranTech.git)
+cd WarranTech
+python -m venv venv
+
+# Activation:
+# Windows (PowerShell):
+.\venv\Scripts\Activate.ps1
+# Windows (Command Prompt):
+venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
